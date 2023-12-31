@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  nodejs:
+    tty: true
+    image: node:20.9.0
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    networks:
+      - money_admin
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: money_admin
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    networks:
+      - money_admin
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+networks:
+  money_admin:
+    driver: bridge
+
+volumes:
+  pgdata:
